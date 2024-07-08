@@ -1,3 +1,31 @@
+(* "from typing import List
+
+def shortest_treasure_hunt(grid: List[List[str]]) -> int:
+    """"""
+    Given a grid representing a map, finds the shortest path to collect all treasures and return to the starting point.
+
+    Args:
+        grid (List[List[str]]): A 2D list of characters where 'S' represents the start point, 'T' represents a treasure, 
+                                'E' represents an empty cell, and 'X' represents an obstacle.
+
+    Returns:
+        int: The length of the shortest path to collect all treasures and return to the start point. 
+             Returns -1 if no path is found.
+
+    Examples:
+        >>> grid = [
+        ...     ['S', 'E', 'T'],
+        ...     ['X', 'T', 'E'],
+        ...     ['E', 'E', 'T']
+        ... ]
+        >>> shortest_treasure_hunt(grid)
+        8
+    """"""
+" *)
+
+
+
+
 let can_move_left grid i j =
   j - 1 >= 0 && grid.(i).(j - 1) <> 'X'
 
@@ -77,7 +105,7 @@ let () =
   |] = -1 );
   assert (
     shortest_treasure_hunt [|
-    [| 'S'; 'E'; 'X' |];
+    [| 'S'; 'E'; 'T' |];
     [| 'X'; 'T'; 'E' |];
     [| 'E'; 'E'; 'T' |]
   |] = 8 
