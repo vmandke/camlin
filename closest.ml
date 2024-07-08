@@ -1,3 +1,30 @@
+(* "package main
+
+import (
+	""fmt""
+	""math""
+	""sort""
+)
+
+// Given an array of integers `arr` and an integer `target`,
+// Return the set of integers from the array whose sum is closest or equal to `target` with the least number of elements in ascending order.
+// If there are multiple sets with the same closest sum, return the set with the maximum smaller numbers.
+//
+// Args:
+// - arr ([]int): The input array of integers.
+// - target (int): The target sum.
+//
+// Returns:
+// - []int: A set of integers whose sum is closest to `target`.
+//
+// Example:
+// closestMinimumElementsSum([]int{1, 3, 4, 7, 10}, 15) => [1, 4, 10]
+// closestMinimumElementsSum([]int{1, -3, 1, 1, 9, -3}, 3) => [-3, -3, 9]
+// closestMinimumElementsSum([]int{0, 0, 0, 0}, 5) => [0]
+func closestMinimumElementsSum(arr []int, target int) []int {" *)
+
+
+
 let closest_minimum_elements_sum arr target =
   let arr = Array.of_list arr in
   Array.sort compare arr;
