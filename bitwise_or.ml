@@ -1,3 +1,26 @@
+(* 
+117
+def maximize_bitwise_or(nums: List[int], moves: int) -> int:
+    """"""
+    Given a list of integers and a number of moves, maximize the bitwise OR of the integers
+    by incrementing any integer by 1 in each move.
+
+    Args:
+        nums (List[int]): A list of integers.
+        moves (int): The number of allowed moves.
+
+    Returns:
+        int: The maximum bitwise OR value that can be obtained.
+
+    Examples:
+        >>> maximize_bitwise_or([1, 2, 3], 2)
+        7
+        >>> maximize_bitwise_or([5, 1], 3)
+        7 
+*)
+
+
+
 let get_bitwise_or arr =
   Array.fold_left (fun acc x -> acc lor x) 0 arr
 
