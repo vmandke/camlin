@@ -1,3 +1,37 @@
+(* "from typing import List
+
+def minimumPathSum(N: int, M: int, edges: List[List[int]]) -> int:
+    """"""
+    Given two integers, N and M, representing the number of nodes and edges in a graph, respectively. A list of size M
+    contains sublists, each with three values: the nodes connected by an edge and the edge weight. The goal is to remove
+    some edges (if possible) to satisfy the following conditions:
+
+    1. It is still possible to reach from any node to any other node.
+    2. The sum of weights of remaining edges is as minimum as possible.
+    3. All remaining edge weights must be unique.
+
+    Returns the sum of edge weights of the remaining edges.
+
+    Args:
+        N (int): The number of nodes in the graph.
+        M (int): The number of edges in the graph.
+        edges (List[List[int]]): A list of edges where each edge is represented by a sublist of three integers [u, v, w]
+                                 where u and v are nodes connected by an edge with weight w.
+
+    Returns:
+        int: The sum of weights of the remaining edges after removal.
+
+    Examples:
+        >>> minimumPathSum(3, 3, [[1, 3, 1], [2, 3, 2], [1, 3, 10]])
+        3
+        
+        >>> minimumPathSum(4, 6, [[1, 2, 1], [1, 3, 1], [1, 4, 1], [2, 3, 1], [2, 4, 1], [3, 4, 1]])
+        3
+    """"""
+" *)
+
+
+
 open Printf
 
 module IntSet = Set.Make(struct
