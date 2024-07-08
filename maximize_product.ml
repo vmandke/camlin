@@ -1,3 +1,27 @@
+(* "from typing import List
+
+def maximize_product(arr: List[int]) -> int:
+    """"""
+    Given an array `arr` that may contain both positive and negative integers, selects a non-empty contiguous subarray
+    that maximizes the product of the minimum element and the sum of its elements. Returns the maximum product as the answer.
+
+    Args:
+        arr (List[int]): A list of integers, which may include both positive and negative values.
+
+    Returns:
+        int: The maximum product of the minimum element and the sum of a non-empty contiguous subarray.
+
+    Examples:
+        >>> maximize_product([-1, 2, -3, -4])
+        16
+        
+        >>> maximize_product([-4, 1, 5, 4, 2, 5])
+        36
+    """"""
+" *)
+
+
+
 let get_prefix_sum arr =
   let n = Array.length arr in
   let prefix_sum = Array.make (n + 1) 0 in
