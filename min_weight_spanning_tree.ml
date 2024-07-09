@@ -1,4 +1,6 @@
-(* "from typing import List
+(*
+125
+"from typing import List
 
 def minimumPathSum(N: int, M: int, edges: List[List[int]]) -> int:
     """"""
@@ -30,56 +32,62 @@ def minimumPathSum(N: int, M: int, edges: List[List[int]]) -> int:
     """"""
 " *)
 
+(* Function to check if all edge weights in a list of edges are unique *)
+  let all_edge_weights_are_unique edges =
+    let weights = List.map (fun e -> e.(2)) edges in
+    let unique_weights = List.sort_uniq compare weights in
+    List.length weights = List.length unique_weights
+  
+  (* Function to visit an edge in the MST calculation *)
+  let rec visit_edge nodes_count edge_count mst_edges dropped_edges visited edge all_seen_path_sums =
+    let visited_new = visited |> List.append [edge.(0); edge.(1)] |> List.sort_uniq compare in
+    let mst_edges_new = List.append mst_edges [edge] in
+    let dropped_edges_new = List.filter (fun e -> e != edge) dropped_edges in
+    let seen_path_sums =
+      if all_edge_weights_are_unique mst_edges_new then
+        minimum_spanning_tree nodes_count edge_count mst_edges_new dropped_edges_new visited_new all_seen_path_sums
+      else
+        all_seen_path_sums
+    in
+    all_seen_path_sums @ seen_path_sums
+  
+  (* Function to find the minimum spanning tree (MST) *)
+  and minimum_spanning_tree nodes_count edge_count mst_edges dropped_edges visited all_seen_path_sums =
+    if List.length visited = nodes_count then
+      let sum_of_edges = List.fold_left (fun acc e -> acc + e.(2)) 0 mst_edges in
+      all_seen_path_sums @ [sum_of_edges]
+    else
+      let rec traverse_dropped_edges = function
+        | [] -> all_seen_path_sums
+        | edge :: rest ->
+            if List.mem edge.(0) visited && List.mem edge.(1) visited then
+              traverse_dropped_edges rest
+            else if List.mem edge.(0) visited || List.mem edge.(1) visited then begin
+              let seen_path_sums = visit_edge nodes_count edge_count mst_edges dropped_edges visited edge all_seen_path_sums in
+              let all_seen_path_sums = all_seen_path_sums @ seen_path_sums in
+              let other_edges = List.filter (fun de -> de.(0) = edge.(0) && de.(1) = edge.(0) && de.(2) != edge.(2)) dropped_edges in
+              all_seen_path_sums @ List.fold_left (fun acc e -> visit_edge nodes_count edge_count mst_edges dropped_edges visited e all_seen_path_sums @ acc) [] other_edges
+            end
+            else
+              traverse_dropped_edges rest
+      in
+      traverse_dropped_edges dropped_edges
+  
+  (* Function to compute the minimum path sum *)
+  let minimum_path_sum nodes_count edge_count edges =
+    let edges_sorted = List.sort (fun e1 e2 -> compare e1.(2) e2.(2)) edges in
+    let intial_edge = List.hd edges_sorted in
+    let initial_visited = [intial_edge.(0); intial_edge.(1)] in
+    let mst_edges = [intial_edge] in
+    let dropped_edges = List.tl edges_sorted in
+    let seen_sums = minimum_spanning_tree nodes_count edge_count mst_edges dropped_edges initial_visited [] in
+    match seen_sums with
+    | [] -> -1
+    | _ -> List.fold_left min max_int seen_sums
+  
 
-
-open Printf
-
-module IntSet = Set.Make(struct
-  type t = int
-  let compare = compare
-end)
-
-let min_path_sum = ref max_int
-
-(* Function to visit an edge *)
-let rec visit_edge nodes_count edge_count mst_edges dropped_edges visited edge =
-  let visited_new = IntSet.add edge.(0) (IntSet.add edge.(1) visited) in
-  let mst_edges_new = edge :: mst_edges in
-  let dropped_edges_new = List.filter ((<>) edge) dropped_edges in
-  minimum_spanning_tree nodes_count edge_count mst_edges_new dropped_edges_new visited_new
-
-(* Function to find the minimum spanning tree *)
-and minimum_spanning_tree nodes_count edge_count mst_edges dropped_edges visited =
-  if IntSet.cardinal visited = nodes_count then (
-    let sum = List.fold_left (fun acc e -> acc + e.(2)) 0 mst_edges in
-    if sum < !min_path_sum then min_path_sum := sum
-  ) else
-    List.iter (fun edge ->
-      if IntSet.mem edge.(0) visited && IntSet.mem edge.(1) visited then ()
-      else if IntSet.mem edge.(0) visited || IntSet.mem edge.(1) visited then (
-        visit_edge nodes_count edge_count mst_edges dropped_edges visited edge;
-        (* If alternate edge available for the same node, try that as well *)
-        List.iter (fun other_edge ->
-          if other_edge <> edge && other_edge.(0) = edge.(0) && other_edge.(1) = edge.(1) then
-            visit_edge nodes_count edge_count mst_edges dropped_edges visited other_edge
-        ) dropped_edges
-      )
-    ) dropped_edges
-
-(* Function to find the minimum path sum *)
-let minimum_path_sum nodes_count edge_count edges =
-  min_path_sum := max_int;
-  let edges_sorted = List.sort (fun a b -> compare a.(2) b.(2)) edges in
-  let initial_edge = List.hd edges_sorted in
-  let initial_visited = IntSet.of_list [initial_edge.(0); initial_edge.(1)] in
-  minimum_spanning_tree nodes_count edge_count [initial_edge] (List.tl edges_sorted) initial_visited;
-  !min_path_sum
-
-(* Helper function to convert an array of arrays to a list of lists *)
-let array_to_list_of_lists arr =
-  Array.to_list (Array.map Array.to_list arr)
-
-(* Main function *)
 let () =
   assert (minimum_path_sum 3 3 [ [|1; 3; 1|]; [|2; 3; 2|]; [|1; 3; 10|] ] = 3);
-  assert (minimum_path_sum 4 6 [ [|1; 2; 1|]; [|1; 3; 1|]; [|1; 4; 1|]; [|2; 3; 1|]; [|2; 4; 1|]; [|3; 4; 1|]] = 3);
+  assert (minimum_path_sum 4 6 [ [|1; 2; 1|]; [|1; 3; 2|]; [|1; 4; 3|]; [|2; 3; 4|]; [|2; 4; 5|]; [|3; 4; 6|]] = 6);
+  (* No mst can be formed as all weights are same *)
+  assert (minimum_path_sum 4 6 [ [|1; 2; 1|]; [|1; 3; 1|]; [|1; 4; 1|]; [|2; 3; 1|]; [|2; 4; 1|]; [|3; 4; 1|]] = -1); 
