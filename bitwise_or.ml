@@ -52,3 +52,9 @@ let () =
   assert (maximize_bitwise_or [5; 1] 3 = 9);
   assert (maximize_bitwise_or [1; 2; 3] 2 = 7);
   assert (maximize_bitwise_or [15; 15] 1 = 31);
+  assert (maximize_bitwise_or [4; 5; 6] 1 = 7); (* Best OR value is 4 | 5 | 7 = 7 *)
+  assert (maximize_bitwise_or [10; 20; 30] 5 = 63); (* Best OR value with moves should give 63 *)
+  assert (maximize_bitwise_or [7; 8; 9] 0 = 15); (* No moves, just OR the values *)
+  assert (maximize_bitwise_or [1; 1; 1; 1] 3 = 5); (* Incrementing values should maximize OR *)
+  assert (maximize_bitwise_or [1; 1; 1; 1; 1; 1; 1; 1; 1; 1] 10 = 11); (* Plenty of moves to maximize OR *)
+  assert (maximize_bitwise_or [5; 10; 15; 20] 2 = 31); (* Mixed values, limited moves *)
