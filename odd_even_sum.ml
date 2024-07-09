@@ -1,3 +1,5 @@
+(* 
+118
 "package main
 
 // isEqualSumPossible determines if it is possible to distribute elements from the second array to the first array
@@ -9,7 +11,7 @@
 //
 // Return: Returns true if the resultant array can have the sum of elements at even indexes equal to the sum of elements
 // at odd indexes. Otherwise, returns false.
-func isEqualSumPossible(arr1 []int, arr2 []int) bool {"
+func isEqualSumPossible(arr1 []int, arr2 []int) bool {" *)
 
 (* 
 ABS(O-E) = X
@@ -69,18 +71,21 @@ let is_equal_sum_possible_from_path even odd path arr2 target_sum =
     ) all_paths
 
 let is_equal_sum_possible arr1 arr2 =
-  let even_elems = List.filteri (fun i _ -> i mod 2 = 0) (Array.to_list arr1) in
-  let odd_elems = List.filteri (fun i _ -> i mod 2 <> 0) (Array.to_list arr1) in
-  let pending_sum = List.fold_left (+) 0 even_elems - List.fold_left (+) 0 odd_elems in
-  let total_available_sum = List.fold_left (+) 0 (Array.to_list arr2) - pending_sum in
-  if total_available_sum < 0 || total_available_sum mod 2 = 1 then
-    false
+  if Array.length arr1 = 0 then
+    true
   else
-    let is_possible, all_paths = is_subset_sum_possible arr2 pending_sum in
-    if is_possible then
-      List.exists (fun path -> is_equal_sum_possible_from_path even_elems odd_elems path (Array.to_list arr2) (total_available_sum / 2)) all_paths
-    else
+    let even_elems = List.filteri (fun i _ -> i mod 2 = 0) (Array.to_list arr1) in
+    let odd_elems = List.filteri (fun i _ -> i mod 2 <> 0) (Array.to_list arr1) in
+    let pending_sum = List.fold_left (+) 0 even_elems - List.fold_left (+) 0 odd_elems in
+    let total_available_sum = List.fold_left (+) 0 (Array.to_list arr2) - pending_sum in
+    if total_available_sum < 0 || total_available_sum mod 2 = 1 then
       false
+    else
+      let is_possible, all_paths = is_subset_sum_possible arr2 pending_sum in
+      if is_possible then
+        List.exists (fun path -> is_equal_sum_possible_from_path even_elems odd_elems path (Array.to_list arr2) (total_available_sum / 2)) all_paths
+      else
+        false
 
       
 let () =
@@ -91,4 +96,11 @@ let () =
   assert (is_equal_sum_possible [|3;2;6|] [|7|] = true);
   (* Not required array 2 *)
   assert (is_equal_sum_possible [|2;3;1|] [|1;2;3|] = true); 
-
+  (* Both arrays empty *)
+  assert (is_equal_sum_possible [||] [||] = true); 
+  (* Array 2 is empty *)
+  assert (is_equal_sum_possible [|1; 1|] [||] = true); 
+  assert (is_equal_sum_possible [|1; 2|] [||] = false); 
+  (* Array 1 is empty *)
+  assert (is_equal_sum_possible [||] [|1; 1|] = true); 
+  assert (is_equal_sum_possible [||] [|33|] = true); 
