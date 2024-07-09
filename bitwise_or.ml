@@ -47,7 +47,6 @@ let maximize_bitwise_or nums max_moves =
   done;
   get_bitwise_or arr
 
-(* Example usage *)
 let () =
   assert (maximize_bitwise_or [5; 1] 3 = 9);
   assert (maximize_bitwise_or [1; 2; 3] 2 = 7);
