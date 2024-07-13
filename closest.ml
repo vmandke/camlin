@@ -1,4 +1,6 @@
-(* "package main
+(* 
+120
+"package main
 
 import (
 	""fmt""
@@ -26,6 +28,10 @@ func closestMinimumElementsSum(arr []int, target int) []int {" *)
 
 
 let closest_minimum_elements_sum arr target =
+
+  if List.length arr = 0 then
+    []
+  else
   let arr = Array.of_list arr in
   Array.sort compare arr;
   let n = Array.length arr in
@@ -67,4 +73,22 @@ let closest_minimum_elements_sum arr target =
 let () =
   assert (closest_minimum_elements_sum [1; 3; 4; 7; 10] 15 = [1; 4; 10]);
   assert (closest_minimum_elements_sum [1; -3; 1; 1; 9; -3] 3 = [-3; -3; 9]);
-  assert (closest_minimum_elements_sum [0; 0; 0; 0] 5 = [0])
+  assert (closest_minimum_elements_sum [0; 0; 0; 0] 5 = [0]);
+  (* Test case: Empty array *)
+  assert (closest_minimum_elements_sum [] 5 = []);
+
+  (* Test case: Target is zero *)
+  List.iter (fun sum -> Printf.printf "%d\n" sum) (closest_minimum_elements_sum [1; 2; 3; -3; -5; 6] 0);
+  assert (closest_minimum_elements_sum [1; 2; 3; -3; -2; -1] 0 = [-1; 1]);
+
+  (* Test case: All elements are positive and target is greater than the sum of all elements *)
+  assert (closest_minimum_elements_sum [1; 2; 3; 4] 20 = [1; 2; 3; 4]);
+
+  (* Test case: Array contains duplicate elements *)
+  assert (closest_minimum_elements_sum [2; 3; 2; 3; 4] 8 = [2; 2; 4]);
+
+  (* Test case: Target is equal to one of the elements *)
+  assert (closest_minimum_elements_sum [5; 10; 15] 10 = [10]);
+
+  (* Test case: Array contains both positive and negative numbers *)
+  assert (closest_minimum_elements_sum [-2; -1; 1; 2; 3] 1 = [-1; 2])
